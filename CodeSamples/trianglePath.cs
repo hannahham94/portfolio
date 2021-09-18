@@ -13,6 +13,7 @@
 	
 	public static void Main()
 	{
+		//added specific triangle data set
 		int[][] data = new int[][] { new int[] {75},
 		new int[] {95, 64},
 		new int[] {17, 47, 82},
