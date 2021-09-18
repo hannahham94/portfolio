@@ -20,6 +20,7 @@ public class Program
 {
 	public static void Main()
 	{
+		//setting up a random tree here
 		TreeNode nodeA = new TreeNode('a');
 		TreeNode nodeB = new TreeNode('b');
 		TreeNode nodeC = new TreeNode('c');
