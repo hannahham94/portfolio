@@ -1,0 +1,20 @@
+//defines a Card class for the deck
+import java.util.*;
+
+public class Card{
+    int value;
+    string suit;
+    
+    Card(int value, string suit){
+        this.value = value;
+        this.suit = suit;
+    }
+    
+    public int getValue(){
+        return this.value;
+    }
+    
+    pubic string getSuit(){
+        return this.suit;
+    }
+}

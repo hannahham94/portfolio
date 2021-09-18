@@ -1,0 +1,124 @@
+//defines a class for a deck of cards
+import java.util.*;
+
+public class Deck{
+    List<Card> drawnCards = new ArrayList<Card>();
+    Hand hand = new Hand();
+    //string for what type of hand for poker game
+    String handType;
+    Card[] inDeck = new Card[52];
+    int cardsCount;
+    //keeps a regular deck stored in case you want to start a new game without creating a new Deck object
+    //used in resetDeck() function
+    Card[] initDeck = new Card[52];
+    
+    Deck(){
+        int tracker = 1;
+        String[] suit = {"hearts", "spades", "clubs", "diamonds"};
+        int suitChooser = 0;
+        for(int i=0; i<inDeck.length; i++) {
+            if (tracker == 14) {
+                tracker = 1;
+                suitChooser += 1;
+            }
+            initDeck[i] = new Card(tracker, suit[suitChooser]);
+            inDeck[i] = new Card(tracker, suit[suitChooser]);
+            tracker += 1;
+        }
+        this.cardsCount = 52;
+        this.handType = "None";
+    }
+    
+    public void shuffle(){
+        //implement a shuffle of inDeck
+        Random rand = new Random();
+        for(int i = 0; i < inDeck.length; i++){
+          int swapper = rand.nextInt(inDeck.length);
+          Card temp = inDeck[swapper];
+          inDeck[swapper] = inDeck[i];
+          inDeck[i] = temp;
+        }
+    }
+    
+    public void printDeck(){
+        for(int i=0; i<inDeck.length; i++){
+            int value = inDeck[i].getValue();
+            String suit = inDeck[i].getSuit();
+            if(value == 11){
+                System.out.println("Jack of " + suit);
+            }
+            else if(value == 12){
+                System.out.println("Queen of " + suit);
+            }
+            else if(value == 13){
+                System.out.println("King of " + suit);
+            }
+            else if(value == 1){
+                System.out.println("Ace of " + suit);
+            }
+            else{
+                System.out.println(value + " of " + suit);
+            }
+        }
+    }
+    
+    //function to reset a deck
+    public void resetDeck(){
+        for(int i=0; i<52; i++) {
+            inDeck[i] = initDeck[i];
+        }
+    }
+    
+    public Card drawCard(){
+        Card topCard = inDeck[cardsCount-1];
+        this.drawnCards.add(topCard);
+        inDeck[cardsCount-1] = null;
+        cardsCount--;
+        return topCard;
+    }
+    
+    public void printDrawnCards(){
+       for(int i=0; i<drawnCards.size(); i++){
+            int value = drawnCards.get(i).getValue();
+            String suit = drawnCards.get(i).getSuit();
+            if(value == 11){
+                System.out.println("Jack of " + suit);
+            }
+            else if(value == 12){
+                System.out.println("Queen of " + suit);
+            }
+            else if(value == 13){
+                System.out.println("King of " + suit);
+            }
+            else if(value == 1){
+                System.out.println("Ace of " + suit);
+            }
+            else{
+                System.out.println(value + " of " + suit);
+            }
+        }
+    }
+    
+    public void addToHand(int cardAmt){
+        for(int i=0; i<cardAmt; i++) {
+            hand.addCard(this.drawCard());
+        }
+    }
+    
+    public void printHand(){
+        this.hand.printHand();
+    }
+    
+    public void setHandSize(int limit) {
+        this.hand.setCardLimit(limit);
+    }
+    
+    public void checkHand(){
+        this.handType = this.hand.pokerHand();
+    }
+    
+    public String getHandType(){
+        this.checkHand();
+        return this.handType;
+    }
+}

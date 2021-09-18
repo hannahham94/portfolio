@@ -1,0 +1,163 @@
+//a class for a hand of cards
+import java.util.*;
+
+public class Hand{
+    List<Card> hand = new ArrayList<Card>();
+    int handSize;
+    int cardLimit;
+    
+    Hand(){
+        this.handSize = 0;
+        this.cardLimit = 1000;
+    }
+    
+    public void printHand(){
+        for(int i=0; i<hand.size(); i++){
+            int value = hand.get(i).getValue();
+            String suit = hand.get(i).getSuit();
+            if(value == 11){
+                System.out.println("Jack of " + suit);
+            }
+            else if(value == 12){
+                System.out.println("Queen of " + suit);
+            }
+            else if(value == 13){
+                System.out.println("King of " + suit);
+            }
+            else if(value == 1){
+                System.out.println("Ace of " + suit);
+            }
+            else{
+                System.out.println(value + " of " + suit);
+            }
+        }
+    }
+    
+    public void addCard(Card card){
+        if(this.handSize + 1 <= this.cardLimit){
+            this.hand.add(card);
+            this.handSize += 1;
+        }
+    }
+    
+    public int getHandSize(){
+        return this.handSize;
+    }
+    
+    public void setCardLimit(int num){
+        this.cardLimit = num;
+    }
+    
+    public String pokerHand() {
+        int[] countSuits = {0, 0, 0, 0};
+        int[] countValues = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        for(int i = 0; i<hand.size;i++){
+            int value = hand.get(i).getValue();
+            String suit = hand.get(i).getSuit();
+            //search for suits
+            if(suit == "hearts"){
+                countSuits[0] += 1;
+            }
+            else if(suit == "spades"){
+                countSuits[1] += 1;
+            }
+            else if(suit == "clubs"){
+                countSuits[2] += 1;
+            }
+            else if(suit == "diamonds"){
+                countSuits[3] += 1;
+            }
+          
+            //search for duplicates
+            switch(value){
+                case 1: countValues[0] += 1; break;
+                case 2: countValues[1] += 1; break;
+                case 3: countValues[2] += 1; break;
+                case 4: countValues[3] += 1; break;
+                case 5: countValues[4] += 1; break;
+                case 6: countValues[5] += 1; break;
+                case 7: countValues[6] += 1; break;
+                case 8: countValues[7] += 1; break;
+                case 9: countValues[8] += 1; break;
+                case 10: countValues[9] += 1; break;
+                case 11: countValues[10] += 1; break;
+                case 12: countValues[11] += 1; break;
+                case 13: countValues[12] += 1; break;
+            }
+        }
+      
+        //boolean value to check for a straight for straight flush and regular straight
+        boolean hasStraight = this.checkSraight(countValues);
+      
+        //check for flush
+        for(int i=0; i<countSuits.length;i++){
+            if(countSuits[i] == 5){
+                //royal flush
+                if(countValues[0] == 1 && countValues[9] == 1 && countValues[10] == 1 && countValues[11] == 1 && countValues[12] == 1){
+                    return "Royal Flush";
+                }
+                //straight flush
+                else if(hasStraight){
+                    return "Straight Flush";
+                }
+                //regular flush
+                else{
+                    return "Flush";
+                }
+            }
+        }
+        if(hasStraight){
+            return "Straight";
+        }
+        //check for multiples
+        boolean hasTriple = False;
+        int hasDouble = 0;
+        for(int i=0; i<countValues.length; i++){
+            if(countValues[i] == 4){
+                return "Four of a Kind";
+            }
+            else if(countValues[i] == 3){
+                hasTriple = True;
+            }
+            else if(countValues[i] == 2){
+                hasDouble += 1;
+            }
+        }
+        //check full house and pairs
+        if(hasTriple && hasDouble > 0){
+            return "Full House";
+        }
+        else if(hasTriple){
+            return "Three of a Kind";
+        }
+        else if(hasDouble > 0){
+            if(hasDouble == 2){
+                return "Two Pair";
+            }
+            else if(hasDouble ==1){
+                return "Pair";
+            }
+        }
+        return "high card";
+      
+    }
+    
+    public boolean checkStraight(int[] values){
+        boolean straight = False;
+        int count = 0;
+        for(int i=0; i<values.length;i++){
+            if(values[i] == 1){
+                straight = True;
+                count += 1;
+            }
+            else{
+                count = 0;
+                straight = False;
+            }
+            if(count == 5){
+                return True;
+            }
+        }
+        return False;
+    }
+}
