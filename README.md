@@ -1,5 +1,4 @@
 # portfolio
-A collection of code I have written.
 
 Hello and welcome to my little portfolio. 
 
